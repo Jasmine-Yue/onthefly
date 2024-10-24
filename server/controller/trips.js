@@ -58,7 +58,7 @@ const getTrip = async (req, res) => {
     `;
   try {
     const results = await pool.query(sqlText, [id]);
-    res.status(200).json(results.rows);
+    res.status(200).json(results.rows[0]);
   } catch (error) {
     res.status(409).json({ error: error.message });
   }
