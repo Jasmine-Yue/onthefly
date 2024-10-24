@@ -8,7 +8,10 @@ router.get("/", TripDestinationsController.getTripsDestinations);
 router.get("/trips/:destination_id", TripDestinationsController.getAllTrips);
 // GET requests at /destinations/:trip_id that calls the getAllDestinations function
 
-router.get("/trips/:trip_id", TripDestinationsController.getAllDestinations);
+router.get(
+  "/destinations/:trip_id",
+  TripDestinationsController.getAllDestinations
+);
 // POST requests at / that calls the createTripDestination function
 
 router.post("/", TripDestinationsController.createTripDestination);

@@ -19,8 +19,8 @@ import { pool } from "../config/database.js";
 const getActivities = async (req, res) => {
   const sqlText = "select * from activities order by id ASC ";
   try {
-    const results = pool.query(sqlText);
-    res.status(200).json(res.rows);
+    const results = await pool.query(sqlText);
+    res.status(200).json(results.rows);
   } catch (error) {
     res.status(409).json({ error: error.message });
   }
@@ -29,10 +29,10 @@ const getActivities = async (req, res) => {
 //GET requests at /activities/:trip_id that calls the getTripActivities function
 const getTripActivities = async (req, res) => {
   const trip_id = parseInt(req.params.trip_id);
-  const sqlText = "select * from activities where trip_id=$1 returning * ";
+  const sqlText = "select * from activities where trip_id=$1 ";
   try {
-    const results = pool.query(sqlText, [trip_id]);
-    res.status(200).json(res.rows);
+    const results = await pool.query(sqlText, [trip_id]);
+    res.status(200).json(results.rows);
   } catch (error) {
     res.status(409).json({ error: error.message });
   }

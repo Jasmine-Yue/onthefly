@@ -4,34 +4,28 @@ GET requests at /destinations/:id that calls the getDestination function
 POSTS requests at /destinations that calls the createDestination function
 DELETE requests at /destinations/:id that calls the deleteDestination function
 PATCH requests at /destinations/:id that calls the updateDestination function
-   CREATE TABLE IF NOT EXISTS destinations (
-          id serial PRIMARY KEY,
-          destination varchar(100) NOT NULL,
-          description varchar(500) NOT NULL,
-          city varchar(100) NOT NULL,
-          country varchar(100) NOT NULL,
-          img_url text NOT NULL,
-          flag_img_url text NOT NULL
-      );
    */
 
+import { pool } from "../config/database.js";
 // GET requests at /destinations that calls the getDestinations function
+
 const getDestinations = async (req, res) => {
   const sqlText = "select * from destinations order by id ASC";
   try {
-    const results = pool.query(sqlText);
-    res.status(200).json(res.rows);
+    const results = await pool.query(sqlText);
+    res.status(200).json(results.rows);
   } catch (error) {
     res.status(409).json({ error: error.message });
   }
 };
 // GET requests at /destinations/:id that calls the getDestination function
 const getDestination = async (req, res) => {
+  console.log("destination get:");
   const id = parseInt(req.params.id);
   const sqlText = "select * from destinations where id=$1 returning * ";
   try {
-    const results = pool.query(sqlText, [id]);
-    res.status(200).json(res.rows);
+    const results = await pool.query(sqlText, [id]);
+    res.status(200).json(results.rows[0]);
   } catch (error) {
     res.status(409).json({ error: error.message });
   }
@@ -49,6 +43,7 @@ const getDestination = async (req, res) => {
 const createDestination = async (req, res) => {
   const { destination, description, city, country, img_url, flag_img_url } =
     req.body;
+  console.log("body:", req.body);
   const insertTableText = `
     insert into destinations(destination,description,city,country,img_url,flag_img_url)
      values($1,$2,$3,$4,$5,$6)
@@ -60,7 +55,7 @@ const createDestination = async (req, res) => {
     city,
     country,
     img_url,
-    flag_img_ur,
+    flag_img_url,
   ];
   try {
     const results = await pool.query(insertTableText, values);

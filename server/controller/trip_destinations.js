@@ -7,12 +7,13 @@
       ); */
 
 // GET requests at / that calls the getTripsDestinations function
+import { pool } from "../config/database.js";
 const getTripsDestinations = async (req, res) => {
   const sqlText =
     "select * from trips_destinations order by id trip_id asc, destination_id asc";
   try {
-    const results = pool.query(sqlText);
-    res.status(200).json(res.rows);
+    const results = await pool.query(sqlText);
+    res.status(200).json(results.rows);
   } catch (error) {
     res.status(409).json({ error: error.message });
   }
@@ -20,10 +21,11 @@ const getTripsDestinations = async (req, res) => {
 // GET requests at /trips/:destination_id that calls the getAllTrips function
 const getAllTrips = async (req, res) => {
   const destination_id = parseInt(req.params.destination_id);
+
   const sqlText = "select * from trips_destinations where destination_id=$1";
   try {
-    const results = pool.query(sqlText, [destination_id]);
-    res.status(200).json(res.rows);
+    const results = await pool.query(sqlText, [destination_id]);
+    res.status(200).json(results.rows);
   } catch (error) {
     res.status(409).json({ error: error.message });
   }
@@ -31,10 +33,13 @@ const getAllTrips = async (req, res) => {
 // GET requests at /destinations/:trip_id that calls the getAllDestinations function
 const getAllDestinations = async (req, res) => {
   const trip_id = parseInt(req.params.trip_id);
-  const sqlText = "select * from trips_destinations where trip_id=$1";
+  const sqlText = ` SELECT d.*
+    FROM trips_destinations td
+    JOIN destinations d ON td.destination_id = d.id
+    WHERE td.trip_id = $1`;
   try {
-    const results = pool.query(sqlText, [trip_id]);
-    res.status(200).json(res.rows);
+    const results = await pool.query(sqlText, [trip_id]);
+    res.status(200).json(results.rows);
   } catch (error) {
     res.status(409).json({ error: error.message });
   }
@@ -42,11 +47,13 @@ const getAllDestinations = async (req, res) => {
 // POST requests at / that calls the createTripDestination function
 const createTripDestination = async (req, res) => {
   const { trip_id, destination_id } = req.body;
-  const sqlText = "insert into trips_destinations values($1,$2) returning *";
+  const sqlText =
+    "insert into trips_destinations(trip_id,destination_id) values($1,$2) returning *";
   const values = [parseInt(trip_id), parseInt(destination_id)];
+
   try {
-    const results = pool.query(sqlText, [values]);
-    res.status(201).json(res.rows);
+    const results = await pool.query(sqlText, values);
+    res.status(201).json(results.rows[0]);
   } catch (error) {
     res.status(409).json({ error: error.message });
   }
