@@ -4,7 +4,7 @@ import Card from "../components/Card";
 const ReadTrips = (props) => {
   const [posts, setPosts] = useState([]);
 
-  const url = "/api/trips";
+  const url = `${props.api_url}/api/trips`;
   const fetchTrips = async () => {
     try {
       const response = await fetch(url);

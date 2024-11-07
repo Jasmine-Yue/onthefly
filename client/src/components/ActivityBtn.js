@@ -5,7 +5,9 @@ const ActivityBtn = (props) => {
   const [num_votes, setNumVotes] = useState(props.num_votes);
 
   const updateCount = async () => {
-    const url = `/api/activities/${props.id}`;
+    //const url = `/api/activities/${props.id}`;
+    const url = `${props.api_url}/api/activities/${props.id}`;
+
     const options = {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },

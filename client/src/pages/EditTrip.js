@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./EditTrip.css";
 
-const EditTrip = ({ data }) => {
+const EditTrip = ({ api_url, data }) => {
   const { id } = useParams();
   const [post, setPost] = useState({
     id: 0,
@@ -17,7 +17,7 @@ const EditTrip = ({ data }) => {
 
   useEffect(() => {
     const fetchTripById = async (id) => {
-      const response = await fetch(`/api/trips/${id}`);
+      const response = await fetch(`${api_url}/api/trips/${id}`);
       const data = await response.json();
       return data; //attention, what if not return
     };

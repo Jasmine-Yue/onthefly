@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./CreateTrip.css";
 
-const CreateTrip = () => {
+const CreateTrip = (props) => {
   const [post, setPost] = useState({
     id: 0,
     title: "",
@@ -11,6 +11,7 @@ const CreateTrip = () => {
     start_date: "",
     end_date: "",
     total_cost: 0.0,
+    username: props.user.username,
   });
 
   const handleChange = (event) => {
@@ -26,7 +27,7 @@ const CreateTrip = () => {
 
   const createTrip = async (event) => {
     event.preventDefault();
-    const url = "/api/trips";
+    const url = `${props.api_url}/api/trips`;
     const options = {
       method: "POST",
       headers: {

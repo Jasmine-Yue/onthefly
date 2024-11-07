@@ -5,39 +5,38 @@ import "./Card.css";
 const AddTripOptionCard = (props) => {
   const { destination_id } = useParams();
 
-    const addToTrip = async (event) => {
-      event.preventDefault();
+  const addToTrip = async (event) => {
+    event.preventDefault();
 
-      const options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          trip_id: props.id,
-          destination_id: destination_id,
-        }),
-      };
-
-      try {
-        const response = await fetch("/api/trips-destinations", options);
-        if (response.ok) {
-          window.location.href = "/";
-        } else {
-          const errorData = await response.json();
-          console.error("Error adding to trip:", errorData);
-          alert("Failed to add destination to trip.");
-        }
-      } catch (error) {
-        console.error("Fetch error:", error);
-        alert("An error occurred while adding destination to trip.");
-      }
-
-      /*  fetch("/api/trips-destinations", options);
-      window.location.href = "/"; */
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        trip_id: props.id,
+        destination_id: destination_id,
+      }),
     };
 
-  
+    try {
+      const url = `${props.api_url}/api/trips-destinations`;
+      const response = await fetch(url, options);
+      if (response.ok) {
+        window.location.href = "/";
+      } else {
+        const errorData = await response.json();
+        console.error("Error adding to trip:", errorData);
+        alert("Failed to add destination to trip.");
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+      alert("An error occurred while adding destination to trip.");
+    }
+
+    /*  fetch("/api/trips-destinations", options);
+      window.location.href = "/"; */
+  };
 
   return (
     <div className="Card" style={{ backgroundImage: `url(${props.img_url})` }}>

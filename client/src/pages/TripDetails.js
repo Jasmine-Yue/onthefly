@@ -4,7 +4,7 @@ import ActivityBtn from "../components/ActivityBtn";
 import DestinationBtn from "../components/DestinationBtn";
 import "./TripDetails.css";
 
-const TripDetails = ({ data }) => {
+const TripDetails = ({ data, api_url }) => {
   const { id } = useParams();
   const [post, setPost] = useState({
     id: 0,
@@ -18,10 +18,11 @@ const TripDetails = ({ data }) => {
   });
   const [activities, setActivities] = useState([]);
   const [destinations, setDestinations] = useState([]);
+  const [travelers, setTravelers] = useState([]);
 
   useEffect(() => {
     const fetchTripById = async (id) => {
-      const response = await fetch(`/api/trips/${id}`);
+      const response = await fetch(`${api_url}/api/trips/${id}`);
       const data = await response.json();
       return data;
     };
@@ -48,27 +49,52 @@ const TripDetails = ({ data }) => {
 
     const fetchActivities = async () => {
       const trip_id = id;
-      const response = await fetch(`/api/activities/${trip_id}`);
+      const response = await fetch(`${api_url}/api/activities/${trip_id}`);
       const data = await response.json();
       setActivities(data);
     };
 
     const fetchDestinations = async () => {
       const trip_id = id;
-      
-      const response = await fetch(`/api/trips-destinations/destinations/${trip_id}`); ///destinations/:trip_id
+
+      const response = await fetch(
+        `${api_url}/api/trips-destinations/destinations/${trip_id}`
+      ); ///destinations/:trip_id
       const data = await response.json();
       setDestinations(data);
+    };
+
+    const fetchTravelers = async () => {
+      /user-trips/users
+      const response = await fetch(
+        `${api_url}/api/user-trips/users/${id}`
+      ); 
+      const data = await response.json();
+      setTravelers(data);
     };
 
     loadTrip();
     fetchActivities();
     fetchDestinations();
+    fetchTravelers();
   }, [data, id]);
 
   return (
     <div className="out">
       <div className="flex-container">
+        <div className='travelers'>
+    {
+        travelers && travelers.length > 0 ?
+        travelers.map((traveler, index) => 
+            <p key={index} style={{ textAlign: 'center', lineHeight: 0, paddingTop: 20 }}>
+                {traveler.username}
+            </p>
+        ) : ''
+    }
+    
+    <br/>
+    <Link to={'/users/add/' + id }><button className='addActivityBtn'>+ Add Traveler</button></Link>
+</div>
         <div className="left-side">
           <h3>{post.title}</h3>
           <p>{"🗓️ Duration: " + post.num_days + " days "}</p>

@@ -4,17 +4,58 @@ import TripRouter from "./routes/trips.js";
 import ActivitiesRouter from "./routes/activities.js";
 import DestinationsRouter from "./routes/destinations.js";
 import TripDestinationRouter from "./routes/trip_destinations.js";
+import authRoute from "./routes/github.js";
+import userTripRoutes from "./routes/users-trips.js";
+
+import passport from "passport";
+import session from "express-session";
+import { GitHub } from "./config/auth.js";
+
 const app = express();
 
 app.use(express.json());
 
-app.use(cors());
+//app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: "GET,POST,PUT,DELETE,PATCH",
+    credentials: true,
+  })
+);
+
+app.use(
+  session({
+    secret: "codepath",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(GitHub); //GitHub
+
+//serializeUser，save user id in  session
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+// deserializeUser，
+passport.deserializeUser((user, done) => {
+  done(null, user); //?
+});
 
 app.use("/api/trips", TripRouter);
 app.use("/api/activities", ActivitiesRouter);
 app.use("/api/destinations", DestinationsRouter);
 
 app.use("/api/trips-destinations", TripDestinationRouter);
+
+app.use("/auth", authRoute);
+
+app.use("/users-trips", userTripRoutes);
 
 app.get("/", (req, res) => {
   res
