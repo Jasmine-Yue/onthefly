@@ -34,6 +34,14 @@ const createTrip = async (req, res) => {
   ];
   try {
     const results = await pool.query(insertTableText, values);
+
+    const tripUser = await pool.query(
+      `INSERT INTO users_trips (trip_id, username)
+    VALUES($1, $2)
+    RETURNING *`,
+      [results.rows[0].id, username]
+    );
+
     res.status(201).json(results.rows[0]);
   } catch (error) {
     res.status(409).json({ error: error.message });
@@ -110,6 +118,25 @@ const deleteTrip = async (req, res) => {
     `;
   try {
     const results = await pool.query(sqlText, [id]);
+
+    const activity_deletion = await pool.query(
+      `DELETE FROM activities
+    WHERE trip_id = $1`,
+      [id]
+    );
+
+    const user_removal = await pool.query(
+      `DELETE FROM users_trips
+    WHERE trip_id = $1`,
+      [id]
+    );
+
+    const destination_removal = await pool.query(
+      `DELETE FROM trips_destinations
+    WHERE trip_id = $1`,
+      [id]
+    );
+
     res.status(200).json(results.rows);
   } catch (error) {
     res.status(409).json({ error: error.message });

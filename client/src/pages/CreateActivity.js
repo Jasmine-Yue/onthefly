@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import "./CreateActivity.css";
 
-const CreateActivity = () => {
+const CreateActivity = (props) => {
   const [activity, setActivity] = useState({ activity: "" });
   const { trip_id } = useParams();
 
@@ -18,7 +18,7 @@ const CreateActivity = () => {
 
   const createActivity = async (event) => {
     event.preventDefault();
-    const url = `/api/activities/${trip_id}`;
+    const url = `${props.api_url}/api/activities/${trip_id}`;
     const options = {
       method: "POST",
       headers: {

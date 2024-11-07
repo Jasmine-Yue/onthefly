@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import "./CreateDestination.css";
 
-const CreateDestination = () => {
+const CreateDestination = (props) => {
   const [destination, setDestination] = useState({
     destination: "",
     description: "",
@@ -27,7 +27,7 @@ const CreateDestination = () => {
     event.preventDefault();
 
     const addDestination = async () => {
-      const url = "/api/destinations";
+      const url = `${props.api_url}/api/destinations`;
       const options = {
         method: "POST",
         headers: {
