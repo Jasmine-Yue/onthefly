@@ -47,6 +47,7 @@ const getAllDestinations = async (req, res) => {
 // POST requests at / that calls the createTripDestination function
 const createTripDestination = async (req, res) => {
   const { trip_id, destination_id } = req.body;
+  console.log("create trip destination body:", req.body);
   const sqlText =
     "insert into trips_destinations(trip_id,destination_id) values($1,$2) returning *";
   const values = [parseInt(trip_id), parseInt(destination_id)];

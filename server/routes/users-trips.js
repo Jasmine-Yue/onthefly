@@ -1,11 +1,9 @@
 import express from "express";
-import {
-  createTripUser,
-  getTripUsers,
-  getUserTrips,
-} from "../controllers/users-trips.js";
+import {createTripUser,getTripUsers,getUserTrips} from "../controller/users-trips.js"
 
-const router = express.router;
+
+
+const router = express.Router();
 
 router.post("/create/:trip_id", createTripUser);
 router.get("/users/:trip_id", getTripUsers);

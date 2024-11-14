@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import "./CreateActivity.css";
 
-export default AddUserToTrip = ({ api_url }) => {
+const AddUserToTrip = ({ api_url }) => {
   const [username, setUsername] = useState({ username: "" });
   const { trip_id } = useParams();
 
@@ -56,7 +56,7 @@ export default AddUserToTrip = ({ api_url }) => {
           type="number"
           id="trip_id"
           name="trip_id"
-          value={trip.id}
+          value={trip_id}
           readOnly
         />
         <br />
@@ -67,3 +67,4 @@ export default AddUserToTrip = ({ api_url }) => {
     </div>
   );
 };
+export default AddUserToTrip;

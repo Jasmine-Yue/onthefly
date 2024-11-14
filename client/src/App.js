@@ -12,6 +12,7 @@ import CreateActivity from "./pages/CreateActivity";
 import AddToTrip from "./pages/AddToTrip";
 import Login from "./pages/Login";
 import Avatar from "./components/Avatar";
+import AddUserToTrip from "./pages/AddUserToTrip";
 
 const App = () => {
   const [trips, setTrips] = useState([]);
@@ -32,6 +33,7 @@ const App = () => {
       //const response = await fetch("/api/trips");
       const response = await fetch(`${API_URL}/api/trips`);
       const data = await response.json();
+      console.log("data");
       setTrips(data);
     };
 
@@ -61,7 +63,7 @@ const App = () => {
       path: "/",
       element:
         user && user.id ? (
-          <ReadTrips data={trips} api_url={API_URL} />
+          <ReadTrips user={user} data={trips} api_url={API_URL} />
         ) : (
           <Login api_url={API_URL} />
         ),
@@ -70,7 +72,7 @@ const App = () => {
       path: "/trip/new",
       element:
         user && user.id ? (
-          <CreateTrip api_url={API_URL} />
+          <CreateTrip user={user} api_url={API_URL} />
         ) : (
           <Login api_url={API_URL} />
         ),
@@ -79,7 +81,7 @@ const App = () => {
       path: "/edit/:id",
       element:
         user && user.id ? (
-          <EditTrip data={trips} api_url={API_URL} />
+          <EditTrip user={user} data={trips} api_url={API_URL} />
         ) : (
           <Login api_url={API_URL} />
         ),
@@ -88,7 +90,7 @@ const App = () => {
       path: "/destinations",
       element:
         user && user.id ? (
-          <ReadDestinations data={destinations} api_url={API_URL} />
+          <ReadDestinations user={user} data={destinations} api_url={API_URL} />
         ) : (
           <Login api_url={API_URL} />
         ),
@@ -97,7 +99,7 @@ const App = () => {
       path: "/trip/get/:id",
       element:
         user && user.id ? (
-          <TripDetails data={trips} api_url={API_URL} />
+          <TripDetails user={user} data={trips} api_url={API_URL} />
         ) : (
           <Login api_url={API_URL} />
         ),
@@ -106,7 +108,7 @@ const App = () => {
       path: "/destination/new/:trip_id",
       element:
         user && user.id ? (
-          <CreateDestination api_url={API_URL} />
+          <CreateDestination user={user} api_url={API_URL} />
         ) : (
           <Login api_url={API_URL} />
         ),
@@ -115,7 +117,7 @@ const App = () => {
       path: "/activity/create/:trip_id",
       element:
         user && user.id ? (
-          <CreateActivity api_url={API_URL} />
+          <CreateActivity user={user} api_url={API_URL} />
         ) : (
           <Login api_url={API_URL} />
         ),
@@ -124,7 +126,7 @@ const App = () => {
       path: "/destinations/add/:destination_id",
       element:
         user && user.id ? (
-          <AddToTrip data={trips} api_url={API_URL} />
+          <AddToTrip user={user} data={trips} api_url={API_URL} />
         ) : (
           <Login api_url={API_URL} />
         ),
