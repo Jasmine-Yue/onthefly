@@ -56,7 +56,7 @@ const EditTrip = ({ api_url, data }) => {
 
   const updatePost = async (event) => {
     event.preventDefault();
-    const url = `/api/trips/${post.id}`;
+    const url = `${api_url}/api/trips/${post.id}`;
     const options = {
       method: "PATCH",
       headers: {
@@ -75,7 +75,7 @@ const EditTrip = ({ api_url, data }) => {
 
   const deletePost = async (event) => {
     event.preventDefault();
-    const url = `/api/trips/${post.id}`;
+    const url = `${api_url}/api/trips/${post.id}`;
     const options = {
       method: "DELETE",
       headers: {

@@ -78,11 +78,11 @@ export const getTripUsers = async (req, res) => {
 export const getUserTrips = async (req, res) => {
   try {
     const username = req.params.username;
-    const results = await pool.query(
-      `
-            SELECT t.* FROM users_trips ut, trips t
-            WHERE ut.trip_id = t.id
-            AND ut.username = $1`,
+    const results = await pool.query(      `
+            SELECT t.* 
+            FROM trips t
+            INNER JOIN users_trips ut ON ut.trip_id = t.id
+            WHERE ut.username = $1`,
       [username]
     );
 

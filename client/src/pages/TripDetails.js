@@ -65,10 +65,7 @@ const TripDetails = ({ data, api_url }) => {
     };
 
     const fetchTravelers = async () => {
-      /user-trips/users
-      const response = await fetch(
-        `${api_url}/api/user-trips/users/${id}`
-      ); 
+      const response = await fetch(`${api_url}/api/user-trips/users/${id}`);
       const data = await response.json();
       setTravelers(data);
     };
@@ -82,19 +79,23 @@ const TripDetails = ({ data, api_url }) => {
   return (
     <div className="out">
       <div className="flex-container">
-        <div className='travelers'>
-    {
-        travelers && travelers.length > 0 ?
-        travelers.map((traveler, index) => 
-            <p key={index} style={{ textAlign: 'center', lineHeight: 0, paddingTop: 20 }}>
-                {traveler.username}
-            </p>
-        ) : ''
-    }
-    
-    <br/>
-    <Link to={'/users/add/' + id }><button className='addActivityBtn'>+ Add Traveler</button></Link>
-</div>
+        <div className="travelers">
+          {travelers && travelers.length > 0
+            ? travelers.map((traveler, index) => (
+                <p
+                  key={index}
+                  style={{ textAlign: "center", lineHeight: 0, paddingTop: 20 }}
+                >
+                  {traveler.username}
+                </p>
+              ))
+            : ""}
+
+          <br />
+          <Link to={"/users/add/" + id}>
+            <button className="addActivityBtn">+ Add Traveler</button>
+          </Link>
+        </div>
         <div className="left-side">
           <h3>{post.title}</h3>
           <p>{"🗓️ Duration: " + post.num_days + " days "}</p>
@@ -117,6 +118,7 @@ const TripDetails = ({ data, api_url }) => {
                   id={activity.id}
                   activity={activity.activity}
                   num_votes={activity.num_votes}
+                  api_url={api_url}
                 />
               ))
             : ""}

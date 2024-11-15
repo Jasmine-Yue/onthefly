@@ -8,9 +8,10 @@ const Login = (props) => {
     <div className="Login">
       <h1>On the Fly ✈️</h1>
       <center>
-        <Link to={AUTH_URL}>
+        <a href={AUTH_URL}>
+          {/* <Link to={AUTH_URL}> */}
           <button className="headerBtn"> 🔒 Login via Github </button>
-        </Link>
+        </a>
       </center>
     </div>
   );

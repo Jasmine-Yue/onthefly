@@ -1,4 +1,5 @@
 import { pool } from "./database.js";
+import { Strategy as GitHubStrategy } from "passport-github2";
 
 const options = {
   clientID: process.env.GITHUB_CLIENT_ID,
@@ -41,3 +42,4 @@ const verify = async (accessToken, refreshToken, profile, callback) => {
     return callback(error);
   }
 };
+export const GitHub = new GitHubStrategy(options, verify);
